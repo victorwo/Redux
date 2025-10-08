@@ -1,13 +1,25 @@
 // Styles
 import * as Styles from "./styles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../cart-item/index";
+import { removeAllProducts } from "../../redux/cart/actions";
+import Button from 'react-bootstrap/Button';
+import { selectProductsTotalPrice } from "../../redux/cart/cart.selector";
+
+
 
 const Cart = ({ isVisible, setIsVisible }) => {
-  const handleEscapeAreaClick = () => setIsVisible(false);
+  const dispatch = useDispatch();
 
-  // select products safely from the cart slice
+  const handleEscapeAreaClick = () => setIsVisible(false);
+  const handleClearCart = () => {
+    dispatch(removeAllProducts());
+  };
+
+
   const products = useSelector((state) => state.cart?.products ?? []);
+  
+  const productsTotalPrice = useSelector(selectProductsTotalPrice)
 
   return (
     <Styles.CartContainer isVisible={isVisible}>
@@ -18,6 +30,10 @@ const Cart = ({ isVisible, setIsVisible }) => {
         {products.map((product) => (
           <CartItem key={product.id} product={product} />
         ))}
+
+        <Styles.CartTotal>Valor: R${productsTotalPrice}</Styles.CartTotal>
+        <Button variant='outline-secondary' onClick={handleClearCart}>Limpar Carrinho</Button>
+                
       </Styles.CartContent>
     </Styles.CartContainer>
   );

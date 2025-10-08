@@ -46,3 +46,4 @@ export const CartTotal = styled.p`
   font-size: 1.125rem;
   margin-bottom: 15px;
 `;
+

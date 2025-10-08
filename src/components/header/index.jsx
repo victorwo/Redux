@@ -2,24 +2,21 @@ import React, { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, logoutUser } from "../../redux/user/action";
 
-
-// Components
 import Cart from "../cart/index";
-
-// Styles
 import * as Styles from "./styles";
+import { selectProductsCount } from "../../redux/cart/cart.selector";
 
 function Header() {
   const [cartIsVisible, setCartIsVisible] = useState(false);
 
   const { currentUser } = useSelector(state => state.user)
   const products = useSelector(state => state.cart?.products ?? []);
+  
+  const productsCount = useSelector(selectProductsCount)
+
   const dispatch = useDispatch()
 
-  //Mostra número de produtos no carrinho!
-  const productsCount = useMemo(() => {
-    return products.reduce((acc, curr) => acc + (curr.quantity || 0), 0);
-  }, [products]);
+  
 
   const handleCartClick = () => {
     setCartIsVisible(true);
